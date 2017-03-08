@@ -27,8 +27,19 @@ app.use(sendView);
 // routing
 
 app.get('/', function (req, res) {
-    request("https://latelier.co/data/cats.json", function(error, response, body) {
-        console.log(body);
-    });
     res.sendView('index.html');
+});
+io.sockets.on('connection', function (socket) {
+    socket.on('print_cat', function () {
+        request("https://latelier.co/data/cats.json", function(error, response, body) {
+            body = body.split("\n");
+            var pute = [];
+            for (var i = 0; i < body.length; i++){
+                if(body[i].match('url') !== null){
+                    pute.push(body[i].match('url').input.substring(16).slice(0, -3));
+                }
+            }
+            socket.emit('cats', pute[0])
+        });
+    });
 });

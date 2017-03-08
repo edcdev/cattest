@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Cats everywhere</title>
     <!-- Compiled and minified CSS -->
+    <script src="/socket.io/socket.io.js"></script>
     <script
             src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
@@ -23,7 +24,26 @@
 <div class="container">
         <div class="row">
             <h4>Hot lolcats in your area</h4>
+            <div class="col s2 offset-s5">
+                <button id="start" class="btn waves-effect">Get started</button>
+            </div>
+            <div id="cat" class="col s6 offset-s3">
+
+            </div>
         </div>
     </div>
+<script>
+    var socket = io();
+    function print() {
+        socket.emit('print_cat');
+        alert('loule');
+    }
+    socket.on('cats', function (cats) {
+        $('#cat').append('<img src='+cats+'>');
+    });
+    $('#start').click(function () {
+        print();
+    })
+</script>
 </body>
 </html>
