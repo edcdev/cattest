@@ -22,28 +22,46 @@
 </nav>
 
 <div class="container">
-        <div class="row">
-            <h4>Hot lolcats in your area</h4>
-            <div class="col s2 offset-s5">
-                <button id="start" class="btn waves-effect">Get started</button>
-            </div>
-            <div id="cat" class="col s6 offset-s3">
-
-            </div>
+    <div class="row">
+        <h4>Hot lolcats in your area</h4>
+        <div class="col s2 offset-s5">
+            <button id="start" class="btn waves-effect">Get started</button>
+        </div>
+        <div id="cat" class="col s6 offset-s3">
+            <img id="cat_img" width="400px" height="400px" src="" alt="Get started !">
+            <button id="like">Like</button>
+            <button id="dislike">Dislike</button>
+            <button id="report">Report broken link</button>
         </div>
     </div>
+</div>
 <script>
-    var socket = io();
-    function print() {
-        socket.emit('print_cat');
-        alert('loule');
-    }
-    socket.on('cats', function (cats) {
-        $('#cat').append('<img src='+cats+'>');
-    });
-    $('#start').click(function () {
-        print();
-    })
+        var socket = io();
+        var cats_print;
+        var i = 0;
+        function start() {
+            $('#start').remove();
+            socket.emit('print_cat');
+        }
+        socket.on('cats', function (cats) {
+            cats_print = cats;
+            print();
+        });
+        function print() {
+            $('#cat_img').attr('src', cats_print[i]);
+        }
+        $('#start').click(function () {
+            start();
+        });
+        $('#like').on('click', function () {
+            i++;
+            print();
+            socket.emit('upvote', cats_print[i])
+        });
+        $('#dislike').on('click', function () {
+            i++;
+            print();
+        });
 </script>
 </body>
 </html>

@@ -35,6 +35,7 @@ module.exports.routes = {
   '/': {
     view: 'homepage'
   },
+  'post /url/:url': 'ApiController.url',
   'post /create': 'ApiController.create'
 
 

@@ -33,13 +33,28 @@ io.sockets.on('connection', function (socket) {
     socket.on('print_cat', function () {
         request("https://latelier.co/data/cats.json", function(error, response, body) {
             body = body.split("\n");
-            var pute = [];
+            var cat = [];
             for (var i = 0; i < body.length; i++){
                 if(body[i].match('url') !== null){
-                    pute.push(body[i].match('url').input.substring(16).slice(0, -3));
+                    cat.push(body[i].match('url').input.substring(16).slice(0, -3));
                 }
             }
-            socket.emit('cats', pute[0])
+            socket.emit('cats', cat)
         });
+    });
+    socket.on('upvote', function (cat) {
+        console.log(cat);
+        request.post({url: 'http://localhost:1337/cats/url/', form: {url: cat}}, function (error, response, body) {
+                if(body !== '[]'){
+                    request.post({url: 'http://localhost:1337/cats/update/'+body.id, form: {upvote: body.upvote + 1}});
+                    console.log(response.statusCode)
+                }
+                else {
+                    request.post({url: 'http://localhost:1337/cats/create', form: {url: cat, upvote: 1}}, function (err, res, body) {
+                        console.log(res.statusCode);
+                    });
+                    console.log('non');
+                }
+        })
     });
 });
