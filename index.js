@@ -46,7 +46,7 @@ io.sockets.on('connection', function (socket) {
         console.log(cat);
         request.post({url: 'http://localhost:1337/cats/url/', form: {url: cat}}, function (error, response, body) {
                 if(body !== '[]'){
-                    request.post({url: 'http://localhost:1337/cats/update/'+body.id, form: {upvote: body.upvote + 1}});
+                    request.post({url: 'http://localhost:1337/cats/vote', form: {id: body.id, vote: 'up', value: body.upvote + 1}});
                     console.log(response.statusCode)
                 }
                 else {
