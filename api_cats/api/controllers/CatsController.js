@@ -16,22 +16,17 @@ module.exports = {
     },
     vote: function (req, res) {
         var id = req.param('id');
-        var vote = req.param('vote');
-        var value = req.param('value');
-        if (vote === 'up'){
-            Cats.update({id: id},{upvote: value}).exec(function afterwards(err, updated) {
-                if (!err){
-                    return res.json('ok');
-                }
-            })
-        }
-        else if (vote === 'down'){
-            Cats.update({id: id},{downvote: value}).exec(function afterwards(err, updated) {
-                if (!err){
-                    return res.json('ok');
-                }
-            })
-        }
+        Cats.findOne({id: id}).exec(function (err, cat) {
+            if (err){
+                console.log(err)
+            }
+            else {
+                cat.votes = Number(cat.votes) + 1;
+                cat.views = Number(cat.views) + 1;
+                console.log(cat);
+                cat.save();
+            }
+        })
     }
 
 };

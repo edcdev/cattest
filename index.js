@@ -43,17 +43,16 @@ io.sockets.on('connection', function (socket) {
         });
     });
     socket.on('upvote', function (cat) {
-        console.log(cat);
         request.post({url: 'http://localhost:1337/cats/url/', form: {url: cat}}, function (error, response, body) {
                 if(body !== '[]'){
-                    request.post({url: 'http://localhost:1337/cats/vote', form: {id: body.id, vote: 'up', value: body.upvote + 1}});
-                    console.log(response.statusCode)
+                    console.log();
+                    body = JSON.parse(body)[0];
+                    request.post({url: 'http://localhost:1337/cats/vote', form: {id: body.id}});
                 }
                 else {
-                    request.post({url: 'http://localhost:1337/cats/create', form: {url: cat, upvote: 1}}, function (err, res, body) {
+                    request.post({url: 'http://localhost:1337/cats/create', form: {url: cat, votes: 1, views: 1}}, function (err, res, body) {
                         console.log(res.statusCode);
                     });
-                    console.log('non');
                 }
         })
     });

@@ -28,10 +28,8 @@
             <button id="start" class="btn waves-effect">Get started</button>
         </div>
         <div id="cat" class="col s6 offset-s3">
-            <img id="cat_img" width="400px" height="400px" src="" alt="Get started !">
-            <button id="like">Like</button>
-            <button id="dislike">Dislike</button>
-            <button id="report">Report broken link</button>
+            <img id="cat_img_1" width="400px" height="400px" src="" alt="Get started !">
+            <img id="cat_img_2" width="400px" height="400px" src="" alt="Get started !">
         </div>
     </div>
 </div>
@@ -48,13 +46,14 @@
             print();
         });
         function print() {
-            $('#cat_img').attr('src', cats_print[i]);
+            $('#cat_img_1').attr('src', cats_print[i]);
+            $('#cat_img_2').attr('src', cats_print[i + 1]);
         }
         $('#start').click(function () {
             start();
         });
-        $('#like').on('click', function () {
-            i++;
+        $('#cat_img_1').on('click', function () {
+            i = i+2;
             print();
             socket.emit('upvote', cats_print[i])
         });
