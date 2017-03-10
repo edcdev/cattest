@@ -53,12 +53,13 @@
             start();
         });
         $('#cat_img_1').on('click', function () {
+            socket.emit('upvote', cats_print[i], cats_print[i+1]);
             i = i+2;
             print();
-            socket.emit('upvote', cats_print[i])
         });
-        $('#dislike').on('click', function () {
-            i++;
+        $('#cat_img_2').on('click', function () {
+            socket.emit('upvote', cats_print[i + 1], cats_print[i]);
+            i = i + 2;
             print();
         });
 </script>

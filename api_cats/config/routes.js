@@ -37,7 +37,8 @@ module.exports.routes = {
   },
   'post /url/:url': 'ApiController.url',
   'post /create': 'ApiController.create',
-  'post /vote/:id/:vote/:value': 'ApiController.vote'
+  'post /vote/:id': 'ApiController.vote',
+  'post /view/:id': 'ApiController.view'
 
 
   /***************************************************************************

@@ -42,18 +42,29 @@ io.sockets.on('connection', function (socket) {
             socket.emit('cats', cat)
         });
     });
-    socket.on('upvote', function (cat) {
+    socket.on('upvote', function (cat, bad_cat) {
         request.post({url: 'http://localhost:1337/cats/url/', form: {url: cat}}, function (error, response, body) {
-                if(body !== '[]'){
-                    console.log();
-                    body = JSON.parse(body)[0];
-                    request.post({url: 'http://localhost:1337/cats/vote', form: {id: body.id}});
-                }
-                else {
-                    request.post({url: 'http://localhost:1337/cats/create', form: {url: cat, votes: 1, views: 1}}, function (err, res, body) {
-                        console.log(res.statusCode);
-                    });
-                }
+            if(body !== '[]'){
+                console.log();
+                body = JSON.parse(body)[0];
+                request.post({url: 'http://localhost:1337/cats/vote', form: {id: body.id}});
+            }
+            else {
+                request.post({url: 'http://localhost:1337/cats/create', form: {url: cat, votes: 1, views: 1}}, function (err, res, body) {
+                    console.log(res.statusCode);
+                });
+            }
+        });
+        request.post({url: 'http://localhost:1337/cats/url/', form: {url: bad_cat}}, function (error, response, body) {
+            if(body !== '[]'){
+                body = JSON.parse(body)[0];
+                request.post({url: 'http://localhost:1337/cats/view', form: {id: body.id}});
+            }
+            else {
+                request.post({url: 'http://localhost:1337/cats/create', form: {url: bad_cat, votes: 0, views: 1}}, function (err, res, body) {
+                    console.log(res.statusCode);
+                });
+            }
         })
     });
 });
