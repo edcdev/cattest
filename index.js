@@ -29,6 +29,9 @@ app.use(sendView);
 app.get('/', function (req, res) {
     res.sendView('index.html');
 });
+app.get('ranks', function (req, res) {
+    res.sendView('ranks.html');
+});
 io.sockets.on('connection', function (socket) {
     socket.on('print_cat', function () {
         request("https://latelier.co/data/cats.json", function(error, response, body) {
@@ -66,5 +69,10 @@ io.sockets.on('connection', function (socket) {
                 });
             }
         })
+    });
+    socket.on('getRanks', function () {
+        request('http://localhost:1337/cats', function (error, res, body) {
+            
+        });
     });
 });
