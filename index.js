@@ -72,7 +72,7 @@ io.sockets.on('connection', function (socket) {
     });
     socket.on('getRanks', function () {
         request('http://localhost:1337/cats', function (error, res, body) {
-            
+
         });
     });
 });
