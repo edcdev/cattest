@@ -29,7 +29,7 @@ app.use(sendView);
 app.get('/', function (req, res) {
     res.sendView('index.html');
 });
-app.get('ranks', function (req, res) {
+app.get('/ranks', function (req, res) {
     res.sendView('ranks.html');
 });
 io.sockets.on('connection', function (socket) {
@@ -71,8 +71,19 @@ io.sockets.on('connection', function (socket) {
         })
     });
     socket.on('getRanks', function () {
+        var cats;
         request('http://localhost:1337/cats', function (error, res, body) {
-
+            cats = JSON.parse(body);
+            cats.sort(function(x, y) {
+                    if (x["votes"] == y["votes"])
+                        return 0;
+                    else if (parseInt(x["votes"]) < parseInt(y["votes"]))
+                        return 1;
+                    else
+                        return -1;
+                });
+            socket.emit('ranks', cats);
         });
+
     });
 });

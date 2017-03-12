@@ -19,7 +19,7 @@
     <div class="nav-wrapper">
         <a href="#" class="brand-logo">Cats</a>
         <ul id="nav-mobile" class="left">
-            <li><a href="ranks.html">Rankings</a></li>
+            <li><a href="ranks">Rankings</a></li>
         </ul>
     </div>
 </nav>
@@ -36,8 +36,8 @@
        socket.emit('getRanks');
     });
     socket.on('ranks', function (cats) {
-        for (var i = 0; i < 5; i++){
-            $('#best').prepend('<p>'+ cats[i].votes +'</p><img src='+cats[i].url+'><br>')
+        for (var i = 5; i > 0; i--){
+            $('#best').prepend('<p>Votes: '+ cats[i].votes +'</p><img width="400px" height="400px" src='+cats[i].url+'><br>')
         }
     })
 </script>
